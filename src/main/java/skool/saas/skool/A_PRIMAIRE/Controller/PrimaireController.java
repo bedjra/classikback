@@ -304,5 +304,17 @@ public class PrimaireController {
     }
 
 
+    @GetMapping("/note/all")
+    public ResponseEntity<?> getAllNotesDto() {
+        try {
+            List<NoteDto> notes = notePrimaireService.getAllNotesAsDto();
+            return ResponseEntity.ok(notes);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("❌ Erreur serveur : " + e.getMessage());
+        }
+    }
+
+
+
 
 }

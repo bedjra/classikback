@@ -14,6 +14,11 @@ import skool.saas.skool.A_PRIMAIRE.repository.NoteRepository;
 import skool.saas.skool.GLOBALE.Entity.AnneeContext;
 import skool.saas.skool.GLOBALE.Entity.AnneeScolaire;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 
 @Service
 public class NoteService {
@@ -108,6 +113,42 @@ public class NoteService {
 
             noteRepository.save(note);
         }
+    }
+
+
+    public List<NoteDto> getAllNotesAsDto() {
+        List<Note> notes = noteRepository.findAll();
+
+        // Grouper les notes par élève + classe + évaluation + année
+        Map<String, NoteDto> regroupement = new LinkedHashMap<>();
+
+        for (Note note : notes) {
+            String key = note.getEleve().getId() + "|" + note.getClasse() + "|" +
+                    note.getEvaluationPrimaire() + "|" + note.getAnneeScolaire().getId();
+
+            NoteDto dto = regroupement.computeIfAbsent(key, k -> {
+                NoteDto nd = new NoteDto();
+                nd.setEleveId(note.getEleve().getId());
+                nd.setClasse(note.getClasse());
+                nd.setEvaluation(note.getEvaluationPrimaire().name());
+                nd.setAnneeScolaireId(note.getAnneeScolaire().getId());
+                nd.setNotes(new ArrayList<>());
+                return nd;
+            });
+
+            NoteDto.MatiereNote matiereNote = new NoteDto.MatiereNote();
+            matiereNote.setValeurNote(note.getValeurNote());
+
+            if (note.getMatiere() != null) {
+                matiereNote.setMatiereId(note.getMatiere().getId());
+            } else if (note.getMatierePrimaire() != null) {
+                matiereNote.setMatierePrimaire(note.getMatierePrimaire().name());
+            }
+
+            dto.getNotes().add(matiereNote);
+        }
+
+        return new ArrayList<>(regroupement.values());
     }
 
 

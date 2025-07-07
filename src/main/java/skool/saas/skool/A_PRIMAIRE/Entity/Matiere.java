@@ -18,10 +18,12 @@ public class Matiere {
     public Matiere() {}
 
 
-    public void setId(Long id) {
-        this.id = id;
+    // ✅ Getter pour id
+    public Long getId() {
+        return id;
     }
 
+    // ✅ Getter et setter pour nom (si tu ne les as pas)
     public String getNom() {
         return nom;
     }
