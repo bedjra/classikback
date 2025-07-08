@@ -33,38 +33,6 @@ public class NoteService {
     private MatiereRepository matiereRepository;
 
 
-
-//    public void enregistrerNotes(NoteDto dto) {
-//        Eleve eleve = eleveRepository.findById(dto.getEleveId())
-//                .orElseThrow(() -> new RuntimeException("Élève introuvable"));
-//
-//        AnneeScolaire annee = AnneeContext.get();
-//
-//        for (NoteDto.MatiereNote noteDto : dto.getNotes()) {
-//            Note note = new Note();
-//            note.setEleve(eleve);
-//            note.setAnneeScolaire(annee);
-//            note.setClasse(dto.getClasse());
-//            note.setValeurNote(noteDto.getValeurNote());
-//            note.setEvaluationPrimaire(EvaluationPrimaire.valueOf(dto.getEvaluation()));
-//
-//            if (noteDto.getMatiereId() != null) {
-//                Matiere matiere = matiereRepository.findById(noteDto.getMatiereId())
-//                        .orElseThrow(() -> new RuntimeException("Matière personnalisée introuvable"));
-//                note.setMatiere(matiere);
-//            } else if (noteDto.getMatierePrimaire() != null) {
-//                MatierePrimaire matiereEnum = MatierePrimaire.valueOf(noteDto.getMatierePrimaire());
-//                note.setMatierePrimaire(matiereEnum);
-//            } else {
-//                throw new RuntimeException("Aucune matière spécifiée.");
-//            }
-//
-//
-//            noteRepository.save(note);
-//        }
-//    }
-
-
     public void mettreAJourNotes(NoteDto dto) {
         Eleve eleve = eleveRepository.findById(dto.getEleveId())
                 .orElseThrow(() -> new RuntimeException("Élève introuvable"));

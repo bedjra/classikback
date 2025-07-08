@@ -31,5 +31,9 @@ public class Matiere {
     public void setNom(String nom) {
         this.nom = nom;
     }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }
 

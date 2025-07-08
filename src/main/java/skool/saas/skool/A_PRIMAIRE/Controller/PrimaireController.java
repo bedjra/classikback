@@ -282,16 +282,6 @@ public class PrimaireController {
     // // // // //// // //  Notes
     @Operation(summary = "Ajouter des notes pour un élève à partir de son nom, prénom et classe")
     @PostMapping("/note")
-//    public ResponseEntity<?> enregistrerNotes(@RequestBody NoteDto noteDto) {
-//        try {
-//            notePrimaireService.enregistrerNotes(noteDto);
-//            return ResponseEntity.ok("✅ Notes enregistrées avec succès.");
-//        } catch (IllegalArgumentException e) {
-//            return ResponseEntity.badRequest().body("❌ Erreur : " + e.getMessage());
-//        } catch (Exception e) {
-//            return ResponseEntity.status(500).body("❌ Erreur serveur : " + e.getMessage());
-//        }
-//    }
     public ResponseEntity<?> mettreAJourNotes(@RequestBody NoteDto noteDto) {
         try {
             notePrimaireService.mettreAJourNotes(noteDto);
