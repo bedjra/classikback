@@ -217,4 +217,15 @@ public class CollegeController {
         Optional<ProfCollege> updated = profCollegeService.mettreAJourProf(id, prof, matiereId);
         return updated.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+
+    // // // // // // // // // // // // // // // // // // // // // // //
+    // // // // //// // //  Paiement
+
+
+
+    // // // // // // // // // // // // // // // // // // // // // // //
+    // // // // //// // //  Notes
+
+
 }

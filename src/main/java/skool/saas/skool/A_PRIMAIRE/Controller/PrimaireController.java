@@ -207,6 +207,7 @@ public class PrimaireController {
         return professeurService.getAllProfesseurs();
     }
 
+
     @Operation(summary = "put prof par son id")
     @PutMapping("/prof/{id}")
     public ResponseEntity<Professeur> updateProf(@PathVariable Long id, @RequestBody Professeur prof) {
