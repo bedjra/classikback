@@ -17,24 +17,22 @@ import java.util.Map;
 @RequestMapping("/licence")
 public class LicenceController {
 
-       @Autowired
+    @Autowired
     private LicenceService licenceService;
 
     @PostMapping
-    public ResponseEntity<String> verifierLicence(@RequestBody Map<String, String> request) {
-        String licenceKey = request.get("licenceKey");
-        String nomEcole = request.get("nomEcole");
-
-        if (licenceKey == null || nomEcole == null) {
-            return ResponseEntity.badRequest().body("Clé licence ou nom école manquant");
+    public ResponseEntity<?> validerLicence(@RequestBody Map<String, String> payload) {
+        String licenceKey = payload.get("licenceKey");
+        if (licenceKey == null || licenceKey.isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of("message", "Clé de licence manquante"));
         }
 
-        boolean valide = licenceService.verifierLicence(licenceKey, nomEcole);
+        boolean estValide = licenceService.validerLicence(licenceKey);
 
-        if (valide) {
-            return ResponseEntity.ok("Licence valide, accès autorisé");
+        if (estValide) {
+            return ResponseEntity.ok(Map.of("message", "Licence valide"));
         } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Licence invalide ou expirée");
+            return ResponseEntity.status(403).body(Map.of("message", "Licence invalide ou expirée"));
         }
     }
 }

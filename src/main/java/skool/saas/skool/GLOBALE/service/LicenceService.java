@@ -1,7 +1,10 @@
 package skool.saas.skool.GLOBALE.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import skool.saas.skool.GLOBALE.Entity.Licence;
+import skool.saas.skool.GLOBALE.repository.ConfigurationRepository;
 import skool.saas.skool.GLOBALE.repository.LicenceRepository;
 
 import java.time.LocalDate;
@@ -12,30 +15,41 @@ public class LicenceService {
     @Autowired
     private LicenceRepository licenceRepository;
 
-    /**
-     * Vérifie si la licence est valide pour l'école donnée.
-     * @param licenceKey La clé de licence à vérifier
-     * @param nomEcole Le nom de l'école (pour s'assurer qu'elle appartient à cette école)
-     * @return true si licence valide, false sinon
-     */
-    public boolean verifierLicence(String licenceKey, String nomEcole) {
-        Optional<Licence> optionalLicence = licenceRepository.findByLicenceKeyAndNomEcole(licenceKey, nomEcole);
 
-        if (optionalLicence.isEmpty()) {
-            return false; // Licence non trouvée
+    @Autowired
+    private ConfigurationRepository configurationRepository;
+
+
+    @Transactional
+    public boolean validerLicence(String licenceKey) {
+        // 1. Récupération du nom de l'école locale via la configuration
+        Optional<Configuration> configOpt = configurationRepository.findFirstByOrderByIdAsc();
+        if (configOpt.isEmpty()) return false;
+
+        String nomEcole = configOpt.get().getNom();
+
+        // 2. Rechercher une licence avec cette clé et ce nom d’école
+        Optional<Licence> licenceOpt = licenceRepository
+                .findByLicenceKeyAndNomEcole(licenceKey, nomEcole);
+
+        if (licenceOpt.isEmpty()) return false;
+
+        Licence licence = licenceOpt.get();
+
+        // 3. Vérification des dates et état actif
+        LocalDate today = LocalDate.now();
+        boolean valide = licence.isActive()
+                && !today.isBefore(licence.getDateDebut())
+                && !today.isAfter(licence.getDateFin());
+
+        if (valide) {
+            // Facultatif : marquer comme validée localement ou activer les fonctionnalités
+            // Exemple : licence.setLicenceValidee(true);
+            // licenceRepository.save(licence);
+            return true;
         }
 
-        Licence licence = optionalLicence.get();
-
-        if (!licence.isActive()) {
-            return false; // Licence inactive
-        }
-
-        LocalDate now = LocalDate.now();
-
-        // Vérifie si la date actuelle est entre dateDebut (incluse) et dateFin (exclue)
-        return (now.isEqual(licence.getDateDebut()) || now.isAfter(licence.getDateDebut()))
-                && now.isBefore(licence.getDateFin());
+        return false;
     }
 
 }
