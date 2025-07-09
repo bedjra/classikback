@@ -20,7 +20,7 @@ import java.util.Map;
 @RequestMapping("/user")
 @Tag(name = "Utilisateur", description = "Gestion des utilisateurs")
 
-public class UtilisateurController {
+public class  UtilisateurController {
 
     @Autowired
     private UtilisateurService utilisateurService;
