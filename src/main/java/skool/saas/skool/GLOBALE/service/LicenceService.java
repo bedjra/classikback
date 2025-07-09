@@ -2,7 +2,8 @@ package skool.saas.skool.GLOBALE.service;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
+import skool.saas.skool.GLOBALE.Entity.Configuration;
 import skool.saas.skool.GLOBALE.Entity.Licence;
 import skool.saas.skool.GLOBALE.repository.ConfigurationRepository;
 import skool.saas.skool.GLOBALE.repository.LicenceRepository;
@@ -10,7 +11,7 @@ import skool.saas.skool.GLOBALE.repository.LicenceRepository;
 import java.time.LocalDate;
 import java.util.Optional;
 
-
+@Service
 public class LicenceService {
     @Autowired
     private LicenceRepository licenceRepository;

@@ -7,7 +7,7 @@ import skool.saas.skool.GLOBALE.Entity.Configuration;
 import java.util.Optional;
 
 public interface ConfigurationRepository extends JpaRepository<Configuration, Long> {
-    Optional<org.springframework.context.annotation.Configuration> findFirstByOrderByIdAsc();
+    Optional<Configuration> findFirstByOrderByIdAsc();
 
     @Query("SELECT c.image FROM Configuration c WHERE c.id = (SELECT MIN(c2.id) FROM Configuration c2)")
     byte[] findImage();
